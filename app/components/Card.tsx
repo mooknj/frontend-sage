@@ -42,7 +42,7 @@ const Card = ({ data, photo, onCardClick, onSaveData }: PropTypes) => {
       alert("Email format is incorrect.")
       return
     } else if (!validate("phone", tmpData["phone"])) {
-      alert("Phone number must be XXX-XXX-XXXX.")
+      alert("Phone number must be XXX-XXXXXXX.")
       return
     }
     setEditDetail(false)
@@ -65,7 +65,7 @@ const Card = ({ data, photo, onCardClick, onSaveData }: PropTypes) => {
       let regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
       pass = value.match(regex)
     } else if (key === "phone") {
-      let regex = /^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$/
+      let regex = /^\(?([0-9]{3})\)?[-]?([0-9]{7})$/
       pass = value.match(regex)
     }
     return pass

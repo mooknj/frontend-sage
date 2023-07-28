@@ -45,7 +45,6 @@ export default function Home() {
   const onUpdateData = (data: any) => {
     let tmp = localStorage.getItem("users") || ""
     const newData = JSON.parse(tmp)
-    console.log("newData", newData)
 
     let dataIndex = newData?.findIndex((item: any) => item.id == data.id)
     newData[dataIndex] = data
@@ -61,12 +60,9 @@ export default function Home() {
     localStorage.setItem("users", JSON.stringify(newData))
   }
 
-  // const userRows = [...Array(Math.ceil(users.length / 3))].map((row, index) => users.slice(index * 3, index * 3 + 3))
-
   return (
     <div className="content-area">
       <div className="row-wrapper">
-        {/* {userRows.map((row: any, index) => ( */}
         <div className="card-row">
           {users.map((user: any) => {
             const photo = userPhotos.find((photo: any) => user.id == photo.id) || { download_url: "" }
@@ -82,7 +78,6 @@ export default function Home() {
             )
           })}
         </div>
-        {/* ))} */}
       </div>
 
       <CardPopup
