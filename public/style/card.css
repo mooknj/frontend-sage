@@ -1,0 +1,136 @@
+.card {
+  position: relative;
+  width: 12.5rem;
+  height: 15.625rem;
+  margin: 0.5rem 1rem;
+  padding: 0.375rem 0.75rem 0.75rem;
+  border-radius: 0.625rem;
+  border: 2px solid #ffb56a;
+  overflow: hidden;
+  background-color: #fffbf7;
+}
+
+.card:not(.card__disabled):hover {
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card__disabled {
+  opacity: 0.3;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.card-action-icon {
+  -webkit-appearance: none;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+.card-action-icon:disabled {
+  cursor: auto;
+}
+.btn-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.card-image {
+  width: 6.25rem;
+  height: 6.25rem;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-user-details {
+  padding: 1rem 0 0.25rem;
+}
+
+.card-user-detail {
+  position: relative;
+}
+
+h5.card-user-detail {
+  white-space: nowrap;
+  margin-bottom: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  font-weight: 700;
+}
+p.card-user-detail,
+p.card-company-detail {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.card-company-details {
+  padding: 0.5rem 0 1rem;
+  border-top: 1px solid #dddddd;
+}
+
+.card-user-details-edit {
+  padding: 0.625rem 0 0.25rem;
+}
+.card-user-details-edit span {
+  display: none;
+}
+
+.card-input {
+  z-index: 2;
+  width: 100%;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #dddddd;
+  font-size: 0.625rem;
+}
+.card-input:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+.card-input-hide {
+  display: none;
+}
+.card-input-editable {
+  display: block;
+}
+
+.popup {
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+}
+.popup.popup__opened {
+  z-index: 2;
+  visibility: visible;
+}
+
+.popup-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.popup.popup__opened .card {
+  transform: scale(1.5);
+}

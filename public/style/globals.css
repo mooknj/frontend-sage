@@ -1,0 +1,34 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  color: #000000;
+}
+
+.content-area {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.row-wrapper {
+  display: inline-flex;
+  max-width: 43.5rem;
+}
+
+.card-row {
+  display: flex;
+  flex-wrap: wrap;
+}

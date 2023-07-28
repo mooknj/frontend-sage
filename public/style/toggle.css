@@ -1,0 +1,36 @@
+.toggle {
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  width: 1.75rem;
+  height: 0.875rem;
+  padding: 0.125rem;
+  border-radius: 0.75rem;
+}
+
+.toggle::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transition: all 0.3s ease-in-out;
+}
+
+.toggle__on {
+  background-color: #6d9a5b;
+}
+.toggle__on::before {
+  left: calc(100% - 0.125rem);
+  transform: translateX(-100%);
+}
+
+.toggle__off {
+  background-color: #9a5b5b;
+}
+.toggle__off::before {
+  left: 0.125rem;
+  transform: translateX(0);
+}

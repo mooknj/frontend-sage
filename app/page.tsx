@@ -1,95 +1,103 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"
+
+import { useEffect, useState } from "react"
+import api from "@/utils/api"
+import Card from "./components/Card"
+import CardPopup from "./components/CardPopup"
 
 export default function Home() {
+  const [users, setUsers] = useState([])
+  const [userPhotos, setUserPhotos] = useState([])
+  const [popupData, setPopupData] = useState({
+    show: false,
+    user: { name: "", email: "", phone: "", company: { name: "" } },
+    photo: "",
+  })
+
+  useEffect(() => {
+    let usersLS = localStorage.getItem("users") || ""
+    let userPhotosLS = localStorage.getItem("userPhotos") || ""
+
+    !usersLS?.length ? fetchUser() : setUsers(JSON.parse(usersLS))
+    !userPhotosLS?.length ? fetchUserPhoto() : setUserPhotos(JSON.parse(userPhotosLS))
+  }, [])
+
+  const fetchUser = async () => {
+    try {
+      const res = await api.getUser()
+      setUsers(res.data)
+      localStorage.setItem("users", JSON.stringify(res.data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchUserPhoto = async () => {
+    try {
+      const res = await api.getUsersPhoto()
+      setUserPhotos(res.data)
+      localStorage.setItem("userPhotos", JSON.stringify(res.data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const onUpdateData = (data: any) => {
+    let tmp = localStorage.getItem("users") || ""
+    const newData = JSON.parse(tmp)
+    console.log("newData", newData)
+
+    let dataIndex = newData?.findIndex((item: any) => item.id == data.id)
+    newData[dataIndex] = data
+
+    setUsers(newData)
+    if (popupData.show) {
+      setPopupData({
+        show: false,
+        user: { name: "", email: "", phone: "", company: { name: "" } },
+        photo: "",
+      })
+    }
+    localStorage.setItem("users", JSON.stringify(newData))
+  }
+
+  // const userRows = [...Array(Math.ceil(users.length / 3))].map((row, index) => users.slice(index * 3, index * 3 + 3))
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="content-area">
+      <div className="row-wrapper">
+        {/* {userRows.map((row: any, index) => ( */}
+        <div className="card-row">
+          {users.map((user: any) => {
+            const photo = userPhotos.find((photo: any) => user.id == photo.id) || { download_url: "" }
+
+            return (
+              <Card
+                key={user.id}
+                data={user}
+                photo={photo.download_url}
+                onCardClick={() => setPopupData({ show: true, user: user, photo: photo.download_url })}
+                onSaveData={onUpdateData}
+              />
+            )
+          })}
         </div>
+        {/* ))} */}
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <CardPopup
+        isOpen={popupData.show}
+        onClose={() =>
+          setPopupData({
+            show: false,
+            user: { name: "", email: "", phone: "", company: { name: "" } },
+            photo: "",
+          })
+        }
+        userData={popupData.user}
+        photo={popupData.photo}
+        onSaveData={onUpdateData}
+      />
+    </div>
   )
 }
